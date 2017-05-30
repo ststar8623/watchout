@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<head>
+    <meta charset="utf-8">
     <link rel='stylesheet' type='css' href='styles.css'>
-  </head>
-  <body>
+</head>
+    
+
+
+<body>
     <div class="scoreboard">
       <!-- Modify the scoreboard when important events occur in your game! -->
       <div class="highscore">High score: <span>0</span></div>
       <div class="current">Current score: <span>0</span></div>
       <div class="collisions">Collisions: <span>0</span></div>
     </div>
-    <div class="board"><div class="mouse"></div></div>
-    <script src="lib/d3.js" charset="utf-8"></script>
-    <script src='watchout.js'></script>
-  </body>
+
+    <p>use arrow keys to navigate the circle</p>
+
+    <script src="../node_modules/underscore-node/lib/underscore.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="keybinding.js"></script>
+    <script src="watchout.js"></script>
+</body>
 </html>
