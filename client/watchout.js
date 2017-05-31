@@ -1,7 +1,7 @@
 gameOptions = {
   height: 750,
   width: 500,
-  nEnemies: 50,
+  nEnemies: 20,
   padding: 20  
 };
   
@@ -25,7 +25,8 @@ var momentum = [0, 0];
 
 var circle = svg.append('circle')
     .datum(point)
-    .attr('r', 10);
+    .attr('r', 10)
+    .attr('class', 'player');
 
 var move = function(x, y) {
   return function(event) {
@@ -78,7 +79,7 @@ var updateEnemies = function(data) {
 var transitionEnemies = function(data) {
   var enemy = d3.select('svg').selectAll('.enemy').data(data);
   
-  enemy.transition().duration(2000)
+  enemy.transition().duration(3000)
     .attr('x', function(data) {
       return Math.random() * gameOptions.width;
     })
@@ -90,19 +91,52 @@ var transitionEnemies = function(data) {
 
 updateEnemies(createEnemies);
 
-  
 setInterval(function() {
   transitionEnemies(createEnemies());
-}, 2000);
+}, 3000);
+
+var updateScore = function() {
+  d3.select('#currentScore').text(gameStats.currentScore.toString());
+  d3.select('#collisions').text(gameStats.collisions.toString());
+  d3.select('#highScore').text(gameStats.highScore.toString());
+  return;
+};
 
 
 
+setInterval(function() {
+  gameStats.currentScore++;
+  updateScore();
+}, 50);
 
 
+var checkCollision = function() {
+  d3.selectAll(".enemy").each( function(d, i){
+    var xCoord = Math.floor(d3.select(this).attr("x"));
+    var yCoord = Math.floor(d3.select(this).attr("y"));
+    // console.log(xCoord, yCoord);
+    var playerCoord = d3.transform(d3.select('.player').attr("transform")).translate;
+    var playerCoordX = Math.floor(playerCoord[0]);
+    var playerCoordY = Math.floor(playerCoord[1]);
+    var closeToX = _.range(xCoord - 25, xCoord + 25);
+    var closeToY = _.range(yCoord - 25, yCoord + 25);
+    
+    // console.log(xCoord === Math.floor(playerCoord[0]) ));
+    if (_.contains(closeToX, playerCoordX) && _.contains(closeToY, playerCoordY)) {
+      if (gameStats.currentScore > gameStats.highScore) {
+        gameStats.highScore = gameStats.currentScore;
+      }
+      gameStats.currentScore = 0;
+      gameStats.collisions++;
+    }
+    
+    
+  });
+};
 
-
-
-
+setInterval(function() {
+  checkCollision();
+}, 50);
 
 
 
