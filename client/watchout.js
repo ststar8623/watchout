@@ -8,7 +8,6 @@ gameOptions = {
 gameStats = {
   highScore: 0,
   currentScore: 0,
-  collisions: 0
 };
 
 
@@ -36,10 +35,21 @@ var move = function(x, y) {
 };
 
 d3.select('body').call(d3.keybinding()
-    .on('←', move(-2, 0))
-    .on('↑', move(0, -2))
-    .on('→', move(2, 0))
-    .on('↓', move(0, 2)));
+    .on('a', move(-2.5, 0))
+    .on('q', move(-2.5, -2.5))
+    .on('w', move(0, -2.5))
+    .on('e', move(2.5, -2.5))
+    .on('c', move(2.5, 2.5))
+    .on('d', move(2.5, 0))
+    .on('x', move(0, 2.5))
+    .on('z', move(-2.5, 2.5)));
+
+// key('a', function() {
+//   d3.select('body').call(d3.keybinding()
+//     .on('←', move(-4, 0)));
+// });
+
+
 
 d3.timer(function() {
   point[0] = Math.min(width, Math.max(0, momentum[0] + point[0]));
@@ -97,7 +107,6 @@ setInterval(function() {
 
 var updateScore = function() {
   d3.select('#currentScore').text(gameStats.currentScore.toString());
-  d3.select('#collisions').text(gameStats.collisions.toString());
   d3.select('#highScore').text(gameStats.highScore.toString());
   return;
 };
@@ -127,7 +136,6 @@ var checkCollision = function() {
         gameStats.highScore = gameStats.currentScore;
       }
       gameStats.currentScore = 0;
-      gameStats.collisions++;
     }
     
     
